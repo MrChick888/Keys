@@ -76,7 +76,7 @@ void main_game(string n)
 		{
 			correct++;
 		}
-		else 
+		else
 		{
 			incorrect++;
 		}
