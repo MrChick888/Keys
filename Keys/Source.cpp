@@ -5,68 +5,76 @@
 
 using namespace std;
 
-void main_menu();
-void second_menu(string n[], int t);
-void turns(string n[], int& t);
-void main_game(string n[], int t, int& c, int& ic, clock_t& d);
-void score_0();
-void score(string n[], int x, int t, int c, int ic, clock_t d);
-void result(string n[], clock_t d_0, clock_t d_1, int c_0, int c_1);
+void main_menu(string player_name[]);
+void check_nick(string player_name[]);
+void turns(string player_name[], int& turns_amount);
+void second_menu(string player_name[], int number_of_player);
+void main_game(int turns_amount, int& correct_answers, int& incorrect_answers, clock_t& game_time);
+void score(string player_name[], int turns_amount, int correct_answers_player1, int incorrect_answers_player1, clock_t game_time_player1, int correct_answers_player2, int incorrect_answers_player2, clock_t game_time_player2);
+void exit();
 
 int main()
 {
-	int x = 0, correct_0 = 0, correct_1 = 0, incorrect_0 = 0, incorrect_1 = 0;
+	int number_of_turns, correct_answers_player1 = 0, correct_answers_player2 = 0, incorrect_answers_player1 = 0, incorrect_answers_player2 = 0;
 	string nick[2];
-	clock_t during_0 = 0, during_1 = 0;
-	main_menu();//wyœwietlnie g³ównego menu
-	cout << "Enter first player nick: "; cin >> nick[0];//wpisanie nicku pierwszego gracza
-	cout << "Enter second player nick: "; cin >> nick[1];
-	turns(nick, x);;//wpisanie iloœci tur
-	main_menu();//wyœwietlnie g³ównego menu
-	second_menu(nick, 0);//wyœwietlenie menu dla pierwszego gracza i odliczanie do startu gry
-	main_game(nick, x, correct_0, incorrect_0, during_0);//dlaczego program wykonuje siê 8 razy za ka¿dym razem nie zale¿nie od podania liczby w fukncji turns?!
-	second_menu(nick, 1);//wyœwietlenie menu dla drugiego gracza i odliczanie do startu gry
-	main_game(nick, x, correct_1, incorrect_1, during_1);//dlaczego program wykonuje siê 8 razy za ka¿dym razem nie zale¿nie od podania liczby w fukncji turns?!
-	score_0();
-	score(nick, 0, x, correct_0, incorrect_0, during_0);
-	score(nick, 1, x, correct_1, incorrect_1, during_1);
-	result(nick, during_0, during_1, correct_0, correct_1);
-	system("PAUSE");
-	system("cls");
-	cout << "THANKS FOR PLAYING SEE YOU SOON!" << endl;
-	system("PAUSE");
+	clock_t game_time_player1 = 0, game_time_player2 = 0;
+
+	main_menu(nick);
+	check_nick(nick);
+	turns(nick, number_of_turns);
+	second_menu(nick, 0);
+	main_game(number_of_turns, correct_answers_player1, incorrect_answers_player1, game_time_player1);
+	second_menu(nick, 1);
+	main_game(number_of_turns, correct_answers_player2, incorrect_answers_player2, game_time_player2);
+	score(nick, number_of_turns, correct_answers_player1, incorrect_answers_player1, game_time_player1, correct_answers_player2, incorrect_answers_player2, game_time_player2);
+	exit();
 }
-void main_menu()
+void main_menu(string player_name[])
 {
 	cout << "===================================" << endl;
 	cout << "====Select correct key the game====" << endl;
 	cout << "===================================" << endl;
+	cout << "Enter first player nick: "; cin >> player_name[0];
+	cout << "Enter second player nick: "; cin >> player_name[1];
 	return;
 }
-void turns(string n[], int& t)
+void check_nick(string player_name[])
 {
-	cout << n[0] << " and " << n[1] << " enter how many turns you want to play: ";
-	if (!(cin >> t))
+	while (player_name[0] == player_name[1])
 	{
-		cout << n[0] << ", " << n[1] << " nice try." << endl;
+		cout << "Player name can't be the same!" << endl;
+		cout << "Enter second player nick again: ";
+		cin >> player_name[1];
+	}
+	return;
+}
+void turns(string player_name[], int& turns_amount)
+{
+	cout << player_name[0] << " and " << player_name[1] << " enter how many turns you want to play: ";
+	if (!(cin >> turns_amount))
+	{
+		cout << player_name[0] << ", " << player_name[1] << " nice try." << endl;
 		cout << "Get some help http://images.algebraden.com/algebra/big/difference-between-integers-and-natural-numbers.jpg " << endl;
 		system("PAUSE");
 		exit(0);
 	}
-	while (t <= 0)
+	while (turns_amount <= 0)
 	{
 		system("cls");
-		cout << n[0] << " ," << n[1] << " you can't enter negative number and zero!" << endl;
+		cout << player_name[0] << " ," << player_name[1] << " you can't enter negative number and zero!" << endl;
 		cout << "Enter the number of turns one more time: ";
-		cin >> t;
+		cin >> turns_amount;
 	}
 	system("cls");
 	return;
 }
-void second_menu(string n[], int t)
+void second_menu(string player_name[], int number_of_player)
 {
-	cout << n[t] << " you must press the right key." << endl;
-	cout << "Let's start the game " << n[t] << ", have fun!" << endl;
+	cout << "===================================" << endl;
+	cout << "====Select correct key the game====" << endl;
+	cout << "===================================" << endl;
+	cout << player_name[number_of_player] << " you must press the right key." << endl;
+	cout << "Let's start the game " << player_name[number_of_player] << ", have fun!" << endl;
 	system("PAUSE");
 	system("cls");
 	for (int i = 5; i > 0; i--)
@@ -77,72 +85,71 @@ void second_menu(string n[], int t)
 	}
 	return;
 }
-void main_game(string n[], int t, int& c, int& ic, clock_t& d)
+void main_game(int turns_amount, int& correct_answers, int& incorrect_answers, clock_t& game_time)
 {
-	int random;
-	char r;
+	int random_char;
+	char entered_char;
 	srand(time(NULL));
 	clock_t start = clock();
-	for (int i = 0; i < t; i++)
+	for (int i = 0; i < turns_amount; i++)
 	{
-		random = rand() % 26 + 65;
-		cout << "PRESS: " << char(random) << endl;
-		cin >> r;
+		random_char = rand() % 26 + 65;
+		cout << "PRESS: " << char(random_char) << endl;
+		cin >> entered_char;
 		system("cls");
-		if (char(random) == char(toupper(r)))
+		if (char(random_char) == char(toupper(entered_char)))
 		{
-			c++;
+			correct_answers++;
 		}
 		else
 		{
-			ic++;
+			incorrect_answers++;
 		}
 	}
-	d = (clock() - start) / 1000;
+	game_time = clock() - start;
 	return;
 }
-void score_0()
+void score(string player_name[], int turns_amount, int correct_answers_player1, int incorrect_answers_player1, clock_t game_time_player1, int correct_answers_player2, int incorrect_answers_player2, clock_t game_time_player2)
 {
 	cout << "=============" << endl;
 	cout << "====SCORE====" << endl;
 	cout << "=============" << endl;
+	cout << player_name[0] << "'s result:" << endl;
+	cout << player_name[0] << " pressed " << correct_answers_player1 << " times correctly and " << incorrect_answers_player1 << " times incorrectly." << endl;
+	cout << "He needed " << game_time_player1 << " seconds to play " << turns_amount << " turns." << endl;
+	cout << "His average time of one turn is " << game_time_player1 / turns_amount << " seconds." << endl << endl;
+
+	cout << player_name[1] << "'s result:" << endl;
+	cout << player_name[1] << " pressed " << correct_answers_player2 << " times correctly and " << incorrect_answers_player2 << " times incorrectly." << endl;
+	cout << "He needed " << game_time_player2 << " seconds to play " << turns_amount << " turns." << endl;
+	cout << "His average time of one turn is " << game_time_player2 / turns_amount << " seconds." << endl << endl;
+
+	if (correct_answers_player1 > correct_answers_player2)
+	{
+		cout << "==========================================================" << endl;
+		cout << "Congratulations " << player_name[0] << " won!" << endl;
+		cout << "==========================================================" << endl;
+		return;
+	}
+	if (game_time_player1 < game_time_player2)
+	{
+		cout << "==========================================================" << endl;
+		cout << "Congratulations " << player_name[0] << " won!" << endl;
+		cout << "==========================================================" << endl;
+		return;
+	}
+	else
+	{
+		cout << "==========================================================" << endl;
+		cout << "Congratulations " << player_name[1] << " won!" << endl;
+		cout << "==========================================================" << endl;
+		return;
+	}
 }
-void score(string n[], int x, int t, int c, int ic, clock_t d)
+void exit()
 {
-	cout << n[x] << "'s result:" << endl;
-	cout << n[x] << " pressed " << c << " times correctly and " << ic << " times incorrectly." << endl;
-	cout << "He needed " << d << " seconds to play " << t << " turns." << endl;
-	cout << "His average time of one turn is " << d / t << " seconds." << endl << endl;
-	return;
-}
-void result(string n[], clock_t d_0, clock_t d_1, int c_0, int c_1)
-{
-	if (c_0 > c_1)
-	{
-		cout << "==========================================================" << endl;
-		cout << "Congratulations " << n[0] << " won!" << endl;
-		cout << "==========================================================" << endl;
-		return;
-	}
-	if (c_0 < c_1)
-	{
-		cout << "==========================================================" << endl;
-		cout << "Congratulations " << n[1] << " won!" << endl;
-		cout << "==========================================================" << endl;
-		return;
-	}
-	else if (d_0 > d_1)
-	{
-		cout << "==========================================================" << endl;
-		cout << "Congratulations " << n[1] << " won!" << endl;
-		cout << "==========================================================" << endl;
-		return;
-	}
-	else if (d_0 < d_1)
-	{
-		cout << "==========================================================" << endl;
-		cout << "Congratulations" << n[0] << " won!" << endl;
-		cout << "==========================================================" << endl;
-		return;
-	}
+	system("PAUSE");
+	system("cls");
+	cout << "THANKS FOR PLAYING SEE YOU SOON!" << endl;
+	system("PAUSE");
 }
