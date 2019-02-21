@@ -98,9 +98,7 @@ void main_game(int turns_amount, int number_of_player, int points[], clock_t gam
 		cin >> entered_char;
 		system("cls");
 		if (char(random_char) == char(toupper(entered_char)))points[number_of_player] ++;
-		//wtedy w komórce 0 i 1 s¹ odpowiedzi prawdi³owe w zerowej komórce odpowiedzi poprawne dla gracza nr 1, a w pierwszej komurce odpowiedzi prawdi³owe dla gracza nr 2
 		else points[number_of_player + 2] ++;
-		//wtedy w komórce 2 i 3 s¹ odpowiedzi nieprawdi³owe w zerowej komórce odpowiedzi poprawne dla gracza nr 1, a w pierwszej komurce odpowiedzi nieprawdi³owe dla gracza nr 2
 	}
 	game_time_player[number_of_player] = clock() - start;
 	return;
