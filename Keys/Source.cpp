@@ -3,6 +3,7 @@
 #include <ctime>
 #include <windows.h>
 #include <conio.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -111,13 +112,13 @@ void score(string player_name[], int turns_amount, int correct_points[], int inc
 	cout << "=============" << endl;
 	cout << player_name[0] << "'s result:" << endl;
 	cout << player_name[0] << " pressed " << correct_points[0] << " times correctly and " << incorrect_points[0] << " times incorrectly." << endl;
-	cout << "He needed " << game_time_player[0] << " seconds to play " << turns_amount << " turns." << endl;
-	cout << "His average time of one turn is " << game_time_player[0] / turns_amount << " seconds." << endl << endl;
+	cout << "He needed " << setprecision(2) << (double)(game_time_player[0] / 1000) << " seconds to play " << turns_amount << " turns." << endl;
+	cout << "His average time of one turn is " << setprecision(2) << (double)(game_time_player[0] / turns_amount) / 1000 << " seconds." << endl << endl;
 
 	cout << player_name[1] << "'s result:" << endl;
 	cout << player_name[1] << " pressed " << correct_points[1] << " times correctly and " << incorrect_points[1] << " times incorrectly." << endl;
-	cout << "He needed " << game_time_player[1] << " seconds to play " << turns_amount << " turns." << endl;
-	cout << "His average time of one turn is " << game_time_player[1] / turns_amount << " seconds." << endl << endl;
+	cout << "He needed " << setprecision(2) << (double)(game_time_player[1] / 1000) << " seconds to play " << turns_amount << " turns." << endl;
+	cout << "His average time of one turn is " << setprecision(2) << (double)(game_time_player[1] / turns_amount) / 1000 << " seconds." << endl << endl;
 
 	if (correct_points[0] > correct_points[1])
 	{
