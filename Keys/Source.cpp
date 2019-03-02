@@ -97,7 +97,7 @@ void main_game(int turns_amount, int number_of_player, int correct_points[], int
 	{
 		random_char = rand() % 26 + 65;
 		cout << "PRESS: " << char(random_char) << endl;
-		entered_char = getch();
+		entered_char = _getch();
 		system("cls");
 		if (char(random_char) == char(toupper(entered_char)))correct_points[number_of_player] ++;
 		else incorrect_points[number_of_player] ++;
